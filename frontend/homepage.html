@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+<title>homepage</title>
+</head>
+<body>
+<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+    <a class="navbar-brand">Navbar</a>
+    <form class="form-inline">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        <div id="username"></div>
+        <a id="login" class="btn btn-primary" href="login.html" role="button">login</a>
+        <a id="logout" class="btn btn-primary" href="#" role="button" onclick="logout()">logout</a>
+
+    </form>
+</nav>
+
+<div class="row">
+  <div class="col-3">
+    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+      <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Home</a>
+      <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Profile</a>
+      <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Messages</a>
+      <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</a>
+    </div>
+  </div>
+  <div class="col-9">
+    <div class="tab-content" id="v-pills-tabContent">
+      <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">...</div>
+      <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">...</div>
+      <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">...</div>
+      <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...</div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script src="js/jquery.cookie.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function(){
+        var token_id = $.cookie('token_id');
+        $.ajax({
+            type: "GET",
+            url: "http://127.0.0.1:8000/users/login",
+            headers: {
+                Accept: "application/json; charset=utf-8",
+                Authorization: "Token " + token_id
+            },
+            success: function (response, status) {
+            console.log(response, status);
+            $('#username').text(response.data);
+            },
+            dataType: "json"
+            });
+
+        if (token_id !== null) {
+            $('#login').hide();
+        }
+
+    });
+
+    function logout() {
+        var token_id = $.cookie('token_id');
+        $.ajax({
+            type: "GET",
+            url: "http://127.0.0.1:8000/users/logout",
+            headers: {
+                Accept: "application/json; charset=utf-8",
+                Authorization: "Token " + token_id
+            },
+          success: function (response, status) {
+              console.log(response, status);
+              $('#content').text(response.msg);
+              if (status === "success") {
+                  $.removeCookie('token_id', { path: '/' });
+                  location.href = "login.html"
+              }
+          },
+          dataType: "json"
+        });
+}
+
+</script>
+</body>
+</html>
