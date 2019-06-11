@@ -1,3 +1,10 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Component
+
+
+class ComponentsAdmin(admin.ModelAdmin):
+    list_display = ['name', 'submitter']
+
+
+admin.site.register(Component, ComponentsAdmin)
