@@ -1,5 +1,5 @@
-from components.models import Component
-from components.serializers import ComponentsSerializer
+from components.models import Component, Chasis
+from components.serializers import ComponentsSerializer, ChasisSerializer
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -42,6 +42,15 @@ class ComponentsList(APIView):
         submitter_id = submitter.get('id')
         print(submitter_id)
 
+        chasis = request.data.get('chasis')
+        height = chasis.get('height')
+        wide = chasis.get('wide')
+
+        chasis_id = Chasis.objects.create(height=height, wide=wide).id
+        print(chasis_id)
+
+        chasis = Chasis.objects.get(id=chasis_id)
+
         user = User.objects.get(id=submitter_id)
 
         serializer = ComponentsSerializer(data=request.data)
@@ -51,6 +60,7 @@ class ComponentsList(APIView):
             serializer.save()
             component = Component.objects.get(name=name)
             component.submitter = user
+            component.chasis = chasis
             component.save()
 
             serializer_new = ComponentsSerializer(instance=component)
