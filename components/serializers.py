@@ -5,7 +5,7 @@ from users.serializers import UsersSerializer
 
 
 class ComponentsSerializer(serializers.ModelSerializer):
-    submitter = UsersSerializer()
+    submitter = UsersSerializer(read_only=True)
 
     class Meta:
         model = Component
