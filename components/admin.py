@@ -11,7 +11,7 @@ admin.site.register(Chasis, ChasisAdmin)
 
 
 class ComponentsAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name', 'submitter']
+    list_display = ['id', 'name', 'submitter', 'chasis']
 
 
 admin.site.register(Component, ComponentsAdmin)

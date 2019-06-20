@@ -3,6 +3,9 @@ from django.contrib.auth.models import User
 
 
 class Chasis(models.Model):
+    """
+    部件
+    """
     height = models.CharField(max_length=32)
     wide = models.CharField(max_length=32)
 
